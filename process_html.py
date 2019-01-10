@@ -2,6 +2,13 @@ from bs4 import BeautifulSoup
 import xlsxwriter
 import datetime
 
+import os
+from os.path import isfile, join
+import natsort
+
+# path = "Downloads/"
+# htmls = [f for f in os.listdir(path) if isfile(join(path, f))]
+
 # f = open("Downloads/0.html", "r")
 # 10/02/2018
 
@@ -70,44 +77,71 @@ def gen_data(filename):
     return final_date, final_cat, final_assign, final_grade, teacher_lines
 
 
-
-def gen_excel(final_date, final_cat, final_assign, final_grade, teacher_lines):
-    # Create a workbook and add a worksheet.
-    workbook = xlsxwriter.Workbook('grades.xlsx')
-    worksheet = workbook.add_worksheet(teacher_lines[2])
-    percent_fmt = workbook.add_format({'num_format': '0.00%'})
+def gen_worksheets(worksheets):
     
+    worksheet_obj = {}
+    # Create a workbook
+    workbook = xlsxwriter.Workbook("grades.xlsx")
+
+    percent_fmt = workbook.add_format({'num_format': '0.00%'})
     merge_format = workbook.add_format({
         'bold': 1,
         'border': 1,
         'align': 'center',
         'valign': 'vcenter',
         'fg_color': 'yellow'})
+    
+    # worksheet = workbook.add_worksheet(teacher_lines[2])
+    
+    for filename in worksheets:
+        row, row_grades, col = 1, 1, 0
+        worksheet_obj[filename] = workbook.add_worksheet(worksheets[filename][5])
+        
+        final_date = worksheets[filename][0]
+        final_cat = worksheets[filename][1]
+        final_assign = worksheets[filename][2]
+        final_grade = worksheets[filename][3]
+        teacher_lines = worksheets[filename][4]
+        
+        # print(worksheets[filename])
 
-    row, row_grades, col = 1, 1, 0
+        for i in range(len(final_date)):
+            worksheet_obj[filename].write(row, col, final_date[i])
+            worksheet_obj[filename].write(row, col+1, final_cat[i])
+            worksheet_obj[filename].write(row, col+2, final_assign[i])
+            row += 1
+                
+        for grade, total in (final_grade):
+            worksheet_obj[filename].write(row_grades, col+3, grade)
+            worksheet_obj[filename].write(row_grades, col+4, total)
+            worksheet_obj[filename].write(row_grades, col+5,
+                            "=(D{}/E{})".format(row_grades+1, row_grades+1), percent_fmt)
+            row_grades += 1
 
-    for i in range(len(final_date)):
-        worksheet.write(row, col, final_date[i])
-        worksheet.write(row, col+1, final_cat[i])
-        worksheet.write(row, col+2, final_assign[i])
-        row += 1
-            
-    for grade, total in (final_grade):
-        print(row_grades, col+3, grade)
-        print(row_grades, col+4, total)
-        worksheet.write(row_grades, col+3, grade)
-        worksheet.write(row_grades, col+4, total)
-        worksheet.write(row_grades, col+5,
-                        "=(D{}/E{})".format(row_grades+1, row_grades+1), percent_fmt)
-        row_grades += 1
+        worksheet_obj[filename].merge_range('A1:F1', teacher_lines[0], merge_format)
 
-    worksheet.merge_range('A1:F1', teacher_lines[0], merge_format)
-
+    # Sort the worksheets -> Ascending
+    workbook.worksheets_objs.sort(key=lambda x: x.name)
     workbook.close()
     
-# final_grade, teacher_lines = gen_data("Downloads/0.html")
-final_date, final_cat, final_assign, final_grade, teacher_lines = gen_data("Downloads/0.html")
-# print(final_grade)
-gen_excel(final_date, final_cat, final_assign, final_grade, teacher_lines)
-# print(teacher_lines)
-# gen_excel(final_grade, teacher_lines)
+# final_date, final_cat, final_assign, final_grade, teacher_lines = gen_data("Downloads/0.html")
+
+
+def gen_excel(path=None):
+    worksheets = {}
+    if path == None:
+        path = "Downloads/"
+        
+    htmls = [f for f in os.listdir(path) if isfile(join(path, f))]
+    htmls = natsort.natsorted(htmls)
+    
+    for filename in htmls:
+        final_date, final_cat, final_assign, final_grade, teacher_lines = gen_data(path + filename)
+        
+        sheet_name = teacher_lines[2]
+        worksheets[filename] = [final_date, final_cat, final_assign, final_grade, teacher_lines, sheet_name]
+    
+    gen_worksheets(worksheets)
+
+
+gen_excel()
