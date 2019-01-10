@@ -2,9 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 
-possible_grades = "A B C D F"
-grade_pages = []
-
 driver = webdriver.Chrome()
 website = driver.get("https://ps.acsd1.org/public/")
 
@@ -13,12 +10,11 @@ time.sleep(2)
 uname = driver.find_element_by_name("account")
 pword = driver.find_element_by_name("pw")
 button = driver.find_element_by_id("btn-enter-sign-in")
-# button = driver.find_element_by_class_name("submit")
 
 time.sleep(0.5)
 
-uname.send_keys("20jarulsamy")
-pword.send_keys("chemistry2")
+uname.send_keys("*")
+pword.send_keys("*")
 
 time.sleep(0.3)
 
@@ -29,7 +25,10 @@ url = "https://ps.acsd1.org/guardian/home.html"
 driver.get(url)
 
 def gen_pages():
+
+    possible_grades = "A B C D F"
     grade_pages = []
+    
     class_pages = driver.find_elements_by_class_name("bold")
     for i in class_pages:
         if str(i.text)[0] in possible_grades:
