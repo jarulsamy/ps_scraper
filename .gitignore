@@ -1,5 +1,6 @@
-/.vscode/
+/Downloads/*
+/.vscode/*
 cred.py
 /__pycache__/
-/*.log
-/*.xlsx
+*.log
+*.xlsx
