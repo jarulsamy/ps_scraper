@@ -1,0 +1,5 @@
+/.vscode/
+cred.py
+/__pycache__/
+/*.log
+/*.xlsx

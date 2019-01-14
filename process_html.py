@@ -1,16 +1,10 @@
 from bs4 import BeautifulSoup
 import xlsxwriter
 import datetime
-
+from selenium.webdriver.support.ui import WebDriverWait
 import os
 from os.path import isfile, join
 import natsort
-
-# path = "Downloads/"
-# htmls = [f for f in os.listdir(path) if isfile(join(path, f))]
-
-# f = open("Downloads/0.html", "r")
-# 10/02/2018
 
 def gen_data(filename):
     f = open(filename, "r")
@@ -79,22 +73,54 @@ def gen_data(filename):
 
 def gen_worksheets(worksheets):
     
+    # Dictionary of worksheets
     worksheet_obj = {}
+    
     # Create a workbook
     workbook = xlsxwriter.Workbook("grades.xlsx")
 
     percent_fmt = workbook.add_format({'num_format': '0.00%'})
-    merge_format = workbook.add_format({
+
+    final_grade_format = workbook.add_format()
+    final_grade_format.set_num_format('0.00')
+
+    title_format = workbook.add_format({
         'bold': 1,
         'border': 1,
         'align': 'center',
         'valign': 'vcenter',
         'fg_color': 'yellow'})
     
+    grade_format = workbook.add_format({
+        'bold': 1,
+        'border': 1,
+        'align': 'center',
+        'valign': 'vcenter',
+        'fg_color': '#00FFFF'
+    })
+
+    fail_format = workbook.add_format({
+        'border': 1,
+        'bg_color': '#FF0000',
+        'font_color': '	#000000',
+    })
+
+    moderate_format = workbook.add_format({
+        'border': 1,
+        'bg_color': '#ff9900',
+        'font_color': '	#000000',
+    })
+
+    pass_format = workbook.add_format({
+        'border': 1,
+        'bg_color': '#00ff00',
+        'font_color': '	#000000',
+    })
+
     # worksheet = workbook.add_worksheet(teacher_lines[2])
     
     for filename in worksheets:
-        row, row_grades, col = 1, 1, 0
+        row, row_grades, col = 2, 2, 0
         worksheet_obj[filename] = workbook.add_worksheet(worksheets[filename][5])
         
         final_date = worksheets[filename][0]
@@ -118,15 +144,49 @@ def gen_worksheets(worksheets):
                             "=(D{}/E{})".format(row_grades+1, row_grades+1), percent_fmt)
             row_grades += 1
 
-        worksheet_obj[filename].merge_range('A1:F1', teacher_lines[0], merge_format)
+        worksheet_obj[filename].merge_range('A1:F1', teacher_lines[0], title_format)
+        worksheet_obj[filename].merge_range('A2:D2', 'Final Grade', grade_format)
+
+        # Calculate Final Percentage
+        percentage = '=SUMIF(D3:D{0}, ">=0") / SUMIF(D3:D{0}, ">=0", E3:E36) * 100'.format(row_grades)
+        worksheet_obj[filename].write_formula("E2", percentage, final_grade_format)#, percent_fmt)
+
+        # Calculate Final Grade Letter
+        letter = '=IF(E2 <= 69, "F", IF(AND(E2 >= 69.9, E2 <= 79.9), "C", IF(AND(E2 >= 80, E2 < 89.9), "B", IF(E2 >= 89.9, "A"))))'
+        worksheet_obj[filename].write_formula("F2", letter)
+
+        worksheet_obj[filename].conditional_format("E2:F2",
+        {
+            'type': 'formula',
+            'criteria': '=$F$2="A"',
+            'format': pass_format
+        })
+        
+        worksheet_obj[filename].conditional_format("E2:F2",
+        {
+            'type': 'formula',
+            'criteria': '=$F$2="B"',
+            'format': moderate_format
+        })
+        
+        worksheet_obj[filename].conditional_format("E2:F2",
+        {
+            'type': 'formula',
+            'criteria': '=$F$2="C"',
+            'format': moderate_format
+        })
+
+        worksheet_obj[filename].conditional_format("E2:F2",
+        {
+            'type': 'formula',
+            'criteria': '=$F$2="F"',
+            'format': fail_format
+        })
 
     # Sort the worksheets -> Ascending
     workbook.worksheets_objs.sort(key=lambda x: x.name)
     workbook.close()
     
-# final_date, final_cat, final_assign, final_grade, teacher_lines = gen_data("Downloads/0.html")
-
-
 def gen_excel(path=None):
     worksheets = {}
     if path == None:
@@ -143,5 +203,4 @@ def gen_excel(path=None):
     
     gen_worksheets(worksheets)
 
-
-gen_excel()
+    print("Writing to grades.xlsx...Done!")

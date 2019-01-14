@@ -1,31 +1,37 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
+import cred
 
 driver = webdriver.Chrome()
 website = driver.get("https://ps.acsd1.org/public/")
 
 time.sleep(2)
 
+# Find Username, password, and button
 uname = driver.find_element_by_name("account")
 pword = driver.find_element_by_name("pw")
 button = driver.find_element_by_id("btn-enter-sign-in")
 
 time.sleep(0.5)
 
-uname.send_keys("*")
-pword.send_keys("*")
+# Substitite with Username and Password
+uname.send_keys(cred.username)
+pword.send_keys(cred.password)
 
 time.sleep(0.3)
 
 button.click()
 
 time.sleep(1)
+
+# Switch to new URL 
 url = "https://ps.acsd1.org/guardian/home.html"
 driver.get(url)
 
 def gen_pages():
 
+    # Possible grades to find correct Hyperlinks
     possible_grades = "A B C D F"
     grade_pages = []
     
@@ -41,23 +47,23 @@ def gen_pages():
 grade_pages = gen_pages()
 
 for i in grade_pages:
-    f = open("Downloads/" + str(grade_pages.index(i)) + ".html", "w+")
-    # i.click()
+    f = open("Downloads/" + str(grade_pages.index(i)) + ".html", "wb")
+
+    # Open and switch to new tab
     i.send_keys(Keys.CONTROL + Keys.RETURN)
     driver.switch_to.window(driver.window_handles[-1])
+
+    # Save the source to file
     time.sleep(5)
     f.write(driver.page_source.encode('utf-8').strip())
     driver.close()
+
+    # Cleanup, switch back to main tab
     time.sleep(1)
     driver.switch_to.window(driver.window_handles[0])
-    # driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 'w')
-    # driver.execute_script("window.history.go(-1)")
     f.close()
     time.sleep(1)
 
+# Kill main window
 time.sleep(.1)
-
 driver.close()
-
-
-# f.close()
