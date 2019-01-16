@@ -8,20 +8,8 @@
 This CLI software will query the Albany County School District #1 Powerschool website and write student grades to an Excel document.
 
 
-[![Build Status](http://img.shields.io/travis/badges/badgerbadgerbadger.svg?style=flat-square)](https://travis-ci.org/badges/badgerbadgerbadger)
+[![Build Status](https://travis-ci.org/JoshuaA9088/ps_scraper.svg?branch=master)](https://travis-ci.org/JoshuaA9088/ps_scraper.svg?branch=master)
 
-
-<!-- ## Example (Optional)
-
-```javascript
-// code away!
-
-let generateProject = project => {
-  let code = [];
-  for (let js = 0; js < project.length; js++) {
-    code.push(js);
-  }
-}; -->
 ---
 
 ## Usage
