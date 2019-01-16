@@ -1,6 +1,5 @@
 language: python
 python:
-  - "3.3"
   - "3.4"
   - "3.5"
   - "3.6"
@@ -8,6 +7,5 @@ cache: pip
 install:
   - pip install -r requirements.txt
 script:
-  - python main_args.py
-  - python url_grabber.py
+  - python process_html.py
   - python web_driver.py
