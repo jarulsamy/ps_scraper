@@ -25,6 +25,10 @@ def download_htmls(username=None, password=None, output=None):
     grade_pages = []
 
     driver = webdriver.Chrome()
+    
+    # Switch to new URL
+    url = "https://ps.acsd1.org/guardian/home.html"
+    driver.get(url)
 
     # Find Username, password, and button
     uname = driver.find_element_by_name("account")
@@ -37,10 +41,6 @@ def download_htmls(username=None, password=None, output=None):
     
     # Submit
     button.click()
-
-    # Switch to new URL
-    url = "https://ps.acsd1.org/guardian/home.html"
-    driver.get(url)
 
     # Find the write hyperlinks.
     class_pages = driver.find_elements_by_class_name("bold")
