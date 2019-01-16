@@ -15,11 +15,6 @@ def download_htmls(username=None, password=None, output=None):
     if not os.path.exists(str(output)):
         os.makedirs(str(output))
 
-    # Check and ensure creds were specified
-    if username == None or password == None:
-        print("Enter a username / password")
-        exit(0)
-
     # Possible grades to find correct Hyperlinks
     possible_grades = "A B C D F"
     grade_pages = []

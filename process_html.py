@@ -204,3 +204,18 @@ def gen_excel(path=None):
     gen_worksheets(worksheets)
 
     print("Writing to grades.xlsx...Done!")
+
+def cleanup(path=None, everything=False):
+    if path == None:
+        path = Path("Downloads")
+
+    htmls = [Path(f) for f in os.listdir(path) if isfile(join(path, f))]
+    for f in htmls:
+        os.unlink(path / f)
+    
+    if everything:
+        print("Deleting resulting files...")
+        os.unlink("grades.xlsx")
+
+    os.rmdir(path)
+    print("Done cleaning up...")

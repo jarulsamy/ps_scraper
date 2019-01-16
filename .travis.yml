@@ -1,11 +1,20 @@
 language: python
 python:
-  - "3.4"
-  - "3.5"
-  - "3.6"
+- '3.4'
+- '3.5'
+- '3.6'
 cache: pip
+addons:
+  chrome: stable
+before_install:
+  - google-chrome stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
 script:
-  - python process_html.py
-  - python web_driver.py
+- python process_html.py
+- python web_driver.py
+- python build_test.py
+env:
+  global:
+  - secure: UDPBaqT6KhSVWY7+leyb86okqzzC1XUySKlFJt0BJdlrvEGohEfMEnLdJxTCGmYxcezlQ+V2SwpQvAvGZ5El/3BSZrAendEZmJw7E62fJIoQ+204+H22SJdpvP+kDPA4+LGgc9cciXJPORUingOT31kGFQ9HCCTM4Nf+QDOrPeLHdcuhVm1KLwt2QjiT1rp37sXIR301NobieQzNinQlqBgy57XGtdgq69em/NA/yTLRrNbYx4wBEUf5zc5Y8C6Rl2DQUiJ61+hekNO95uIqd/u/N3KgcAC4JBuv6GSn9decxrsST3xHbRBObtAE+3eOtLvKrAkdX3GNrrzgbsPKGWfVn7GXZJXsmKghvuKQQYmy/N5Pk+Zi73Au5WUb7huEOY3lvC7fuEboCWVijp/f6N9+BHJAmpk9lOFQ3PrFjkNn4S4tvucxTPuPb++n3/QRIquz9+U5+oSwq4Cv8G46a9fHeneJIlBFupw3C15h9CZPZVUptVDdGzmE/YjEoPzpwAGG3ZH4uq1hK2273zTKYxl5Vk+ebK8dWMTdr170Jnqsxf65tAAST3hRWOLO0X+fIyvsjJ80Gifxj4TbxgU4cPoQyD4h5W1VFEcCY3i+WY+xANgeT7SLeQdIcw0GkbK1iNoAzRdcM0uS628mLxPJFdn6FTId9bwWBGsy/F0Gw7M=
+  - secure: Zwu4jhJAGkgw/tOkPJUKw4xPPBrdwX7FQH3UBzsnX6vo3S2LVQAxU7MoSeO+Tus2rZ0DDrE+mV4cAngTRiB/uEplG2BSZrOTNpiAlzmHxwSjGoEPxPkoBCVOa8r7xFA75NOXkk2vHVV+fRjdOFthLJxICwcSjuK+yFaqoF+u8ZN6z6FPjcMclLRgbewp+PN6x98NtBDFvuqgLFJCbcDL04j76r2zGzVRTAdU8z7n6Z8z3G/IdaGcSdLAKCMwzLIEK24Qrlox/4nMZtdXnLo+w0o3C6c+yeoGz962+p5sEcouzBwv1MZeG3eYNzEG99jrGjoibgA1Kgf6iht0fB6SzYGSfavOe25D/q2bsEwxAwndVmQNuThPb22Ze9cgdP+C2JXvCZu1DCuzwJV4z9/dvUTs72ue1qHZvFLP26vKADoWU5DTwggYPTTtwjJqyy/ZzTYbbS5rqzyYyM6szxJqwVSljh4EHBdyrIgQ4Lk2m+zHXd38sKvsaGvEC/w/8S1JXdtwt3bgK3g6+gUnw8BTzKUd8cTXdnwR/xI/xJuZmZ/wV+tYsDGTXQbz1jXImVAr3aTaxkym402lMfuC5IbFZv2WXKXHfsBylkUMS/0mgPoj7iaWCRoWeuIEj018h7nOWQTwQusAYZopcTLx7iMOECVfsDRx1zp8dp6J1pbUqrE=
