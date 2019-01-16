@@ -53,7 +53,8 @@ def download_htmls(username=None, password=None, output=None):
         file_name = Path(str(grade_pages.index(i)) + ".html")
         print("Writing {}...".format(file_name))
         # f = open(output / str(grade_pages.index(i)) + ".html", "wb")
-        f = open(output /file_name, "wb")
+        total_path = str(output / file_name)
+        f = open(total_path, "wb")
 
         # Open and switch to new tab
         i.send_keys(Keys.CONTROL + Keys.RETURN)
