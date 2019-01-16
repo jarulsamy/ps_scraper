@@ -4,9 +4,16 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
-import time
+import os
+from pathlib import Path
 
-def download_htmls(username=None, password=None):
+def download_htmls(username=None, password=None, output=None):
+
+    if output == None:
+        output = Path("Downloads")
+
+    if not os.path.exists(str(output)):
+        os.makedirs(str(output))
 
     # Check and ensure creds were specified
     if username == None or password == None:
@@ -18,7 +25,6 @@ def download_htmls(username=None, password=None):
     grade_pages = []
 
     driver = webdriver.Chrome()
-    website = driver.get("https://ps.acsd1.org/public/")
 
     # Find Username, password, and button
     uname = driver.find_element_by_name("account")
@@ -36,7 +42,7 @@ def download_htmls(username=None, password=None):
     url = "https://ps.acsd1.org/guardian/home.html"
     driver.get(url)
 
-    # Find the write hyperlinks. 
+    # Find the write hyperlinks.
     class_pages = driver.find_elements_by_class_name("bold")
     for i in class_pages:
         if str(i.text)[0] in possible_grades:
@@ -44,7 +50,10 @@ def download_htmls(username=None, password=None):
 
     # Iterate through all class pages and download HTMLs
     for i in grade_pages:
-        f = open("Downloads/" + str(grade_pages.index(i)) + ".html", "wb")
+        file_name = Path(str(grade_pages.index(i)) + ".html")
+        print("Writing {}...".format(file_name))
+        # f = open(output / str(grade_pages.index(i)) + ".html", "wb")
+        f = open(output /file_name, "wb")
 
         # Open and switch to new tab
         i.send_keys(Keys.CONTROL + Keys.RETURN)
@@ -52,7 +61,7 @@ def download_htmls(username=None, password=None):
         
         # Wait till element loads, prevents incomplete page downloads
         try:
-            myElem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'ng-binding')))
+            time_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'ng-binding')))
         # Timeout of 10 seconds
         except TimeoutException:
             print("Loading took too much time!")

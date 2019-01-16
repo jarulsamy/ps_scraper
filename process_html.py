@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
 import xlsxwriter
 import datetime
-from selenium.webdriver.support.ui import WebDriverWait
 import os
 from os.path import isfile, join
+from pathlib import Path
 import natsort
 
 def gen_data(filename):
@@ -24,7 +24,7 @@ def gen_data(filename):
         try:
             datetime.datetime.strptime(date, '%m/%d/%Y')
             final_date.append(date)
-        except:
+        except ValueError as e:
             pass
 
     # Category
@@ -190,17 +190,17 @@ def gen_worksheets(worksheets):
 def gen_excel(path=None):
     worksheets = {}
     if path == None:
-        path = "Downloads/"
+        path = Path('Downloads')
         
-    htmls = [f for f in os.listdir(path) if isfile(join(path, f))]
+    htmls = [Path(f) for f in os.listdir(path) if isfile(join(path, f))]
     htmls = natsort.natsorted(htmls)
     
     for filename in htmls:
-        final_date, final_cat, final_assign, final_grade, teacher_lines = gen_data(path + filename)
+        final_date, final_cat, final_assign, final_grade, teacher_lines = gen_data(path / filename)
         
         sheet_name = teacher_lines[2]
         worksheets[filename] = [final_date, final_cat, final_assign, final_grade, teacher_lines, sheet_name]
-    
+
     gen_worksheets(worksheets)
 
     print("Writing to grades.xlsx...Done!")

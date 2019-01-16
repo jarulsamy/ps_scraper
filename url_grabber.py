@@ -25,7 +25,7 @@ button.click()
 
 time.sleep(1)
 
-# Switch to new URL 
+# Switch to new URL
 url = "https://ps.acsd1.org/guardian/home.html"
 driver.get(url)
 
@@ -38,8 +38,7 @@ def gen_pages():
     class_pages = driver.find_elements_by_class_name("bold")
     for i in class_pages:
         if str(i.text)[0] in possible_grades:
-            grade_pages.append(i)
-    
+            grade_pages.append(i)    
     return grade_pages
 
 
