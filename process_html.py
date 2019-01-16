@@ -6,7 +6,7 @@ from os.path import isfile, join
 from pathlib import Path
 import natsort
 
-def gen_data(filename):
+def scrap_data(filename):
     f = open(filename, "r")
     soup = BeautifulSoup(f, features="lxml")
 
@@ -196,7 +196,7 @@ def gen_excel(path=None):
     htmls = natsort.natsorted(htmls)
     
     for filename in htmls:
-        final_date, final_cat, final_assign, final_grade, teacher_lines = gen_data(path / filename)
+        final_date, final_cat, final_assign, final_grade, teacher_lines = scrap_data(path / filename)
         
         sheet_name = teacher_lines[2]
         worksheets[filename] = [final_date, final_cat, final_assign, final_grade, teacher_lines, sheet_name]

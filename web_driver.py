@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options
 import os
 from pathlib import Path
 
@@ -19,7 +20,11 @@ def download_htmls(username=None, password=None, output=None):
     possible_grades = "A B C D F"
     grade_pages = []
 
-    driver = webdriver.Chrome()
+    # Headless options
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
+    driver = webdriver.Chrome(chrome_options=chrome_options)
     
     # Switch to new URL
     url = "https://ps.acsd1.org/guardian/home.html"

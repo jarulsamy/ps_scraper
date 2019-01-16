@@ -14,6 +14,9 @@ ap.add_argument("-u", "--username", required=False,
 ap.add_argument("-p", "--password", required=False,
                 help="Specify password as argument, NOT SECURE - NOT RECOMMENDED")
 
+ap.add_argument("-nc", "--no_cleanup", required=False,
+                help="Don't auto delete HTMLs download folder")
+
 args = vars(ap.parse_args())
 
 try:
