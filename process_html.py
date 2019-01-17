@@ -148,7 +148,7 @@ def gen_worksheets(worksheets):
         worksheet_obj[filename].merge_range('A2:D2', 'Final Grade', grade_format)
 
         # Calculate Final Percentage
-        percentage = '=SUMIF(D3:D{0}, ">=0") / SUMIF(D3:D{0}, ">=0", E3:E36) * 100'.format(row_grades)
+        percentage = '=SUMIF(D3:D{0}, ">=0") / SUMIF(D3:D{0}, ">=0", E3:E{0}) * 100'.format(row_grades)
         worksheet_obj[filename].write_formula("E2", percentage, final_grade_format)#, percent_fmt)
 
         # Calculate Final Grade Letter
