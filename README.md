@@ -1,9 +1,7 @@
 # PS_Scraper
 ## Laramie High School Powerschool Scraper 
 
-<img src=https://www.stbernschool.org/media/k2/items/cache/1ea804dbf6a45ba977293c237ecc1b08_XL.jpg width=100 height=100 align="middle">
-
-<img src="http://kowb1290.com/files/2012/05/Laramie.jpg" width=100 height =100 align='middle'>
+<img src=ps_logo.jpg width=100 height=100 align="middle"> <img src="lhs_logo.jpg" width=100 height =100 align='middle'>
 
 This CLI software will query the Albany County School District #1 Powerschool website and write student grades to an Excel document.
 
@@ -14,23 +12,30 @@ This CLI software will query the Albany County School District #1 Powerschool we
 
 ## Usage
 
-### Clone
+### Option 1: Windows Only Release Executable
+Download the latest version from the releases tab. Double-click on that executable and enter your username and password. Note, Windows may sound a firewall warning, this can be safely ignored. 
+
+> By default, if no output directory is specified, a Downloads folder containing the HTML files for each class will be created and auto deleted. If the folder, for some reason, is not automatically deleted, it can be safely discarded after run completion. 
+
+### Option 2: Clone (Windows, OSX, Linux)
 
 Clone this repo to your local machine using `https://github.com/JoshuaA9088/ps_scraper`
 
-### Setup
+#### Setup
 
->Install the required dependencies using the `requirements.txt` file.
+Install the required dependencies using the `requirements.txt` file.
 
 ```
 pip install -r requirements.txt
 ```
 
-### Run
+> **Selenium** is required for this application. Please install selenium and the **Chrome Driver**. Add to your platform specific PATH based on the [Selenium Documentation](https://selenium-python.readthedocs.io/index.html).
 
-Call the python script `main_args.py` and specify username and password to grab HTML files and create Excel workbook.
+#### Run
 
-> By default, if no output directory is specified, a Downloads folder containing the HTML files for each class. This folder can be safely discarded after run completion. 
+Call the python script `main.py` and enter your powerschool username and password to grab HTML files and create Excel workbook.
+
+> By default, if no output directory is specified, a Downloads folder containing the HTML files for each class will be created and auto deleted. This folder can be preserved with the `-nc` flag. If the folder, for some reason, is not automatically deleted, it can be safely discarded after run completion. 
 
 ---
 
