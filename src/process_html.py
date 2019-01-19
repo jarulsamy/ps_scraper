@@ -79,6 +79,7 @@ def gen_worksheets(worksheets):
     # Create a workbook
     workbook = xlsxwriter.Workbook("grades.xlsx")
 
+    # Define various cell formats
     percent_fmt = workbook.add_format({'num_format': '0.00%'})
 
     final_grade_format = workbook.add_format()
@@ -90,6 +91,13 @@ def gen_worksheets(worksheets):
         'align': 'center',
         'valign': 'vcenter',
         'fg_color': 'yellow'})
+
+    letter_grade_format = workbook.add_format({
+        'bold': 1,
+        'border': 1,
+        'align': 'center',
+        'valign': 'center',
+    })
     
     grade_format = workbook.add_format({
         'bold': 1,
@@ -128,9 +136,8 @@ def gen_worksheets(worksheets):
         final_assign = worksheets[filename][2]
         final_grade = worksheets[filename][3]
         teacher_lines = worksheets[filename][4]
-        
-        # print(worksheets[filename])
 
+        # Write all data to file
         for i in range(len(final_date)):
             worksheet_obj[filename].write(row, col, final_date[i])
             worksheet_obj[filename].write(row, col+1, final_cat[i])
@@ -153,8 +160,9 @@ def gen_worksheets(worksheets):
 
         # Calculate Final Grade Letter
         letter = '=IF(E2 <= 69, "F", IF(AND(E2 >= 69.9, E2 <= 79.9), "C", IF(AND(E2 >= 80, E2 < 89.9), "B", IF(E2 >= 89.9, "A"))))'
-        worksheet_obj[filename].write_formula("F2", letter)
+        worksheet_obj[filename].write_formula("F2", letter, letter_grade_format)
 
+        # Conditional Formatting
         worksheet_obj[filename].conditional_format("E2:F2",
         {
             'type': 'formula',
@@ -182,6 +190,17 @@ def gen_worksheets(worksheets):
             'criteria': '=$F$2="F"',
             'format': fail_format
         })
+
+        # Calculate and set column widths
+        longest_cat = len(max(final_cat, key=len))
+        longest_assign = len(max(final_assign, key=len))
+
+        worksheet_obj[filename].set_column("A:A", 10)
+        worksheet_obj[filename].set_column('B:B', longest_cat)
+        worksheet_obj[filename].set_column('C:C', longest_assign-5)
+        worksheet_obj[filename].set_column("D:D", 4)
+        worksheet_obj[filename].set_column("E:E", 5)
+        worksheet_obj[filename].set_column("F:F", 7)
 
     # Sort the worksheets -> Ascending
     workbook.worksheets_objs.sort(key=lambda x: x.name)
@@ -219,3 +238,6 @@ def cleanup(path=None, everything=False):
 
     os.rmdir(path)
     print("Done cleaning up...")
+
+if __name__ == "__main__":
+    gen_excel()
