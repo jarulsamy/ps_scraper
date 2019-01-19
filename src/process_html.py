@@ -238,6 +238,3 @@ def cleanup(path=None, everything=False):
 
     os.rmdir(path)
     print("Done cleaning up...")
-
-if __name__ == "__main__":
-    gen_excel()

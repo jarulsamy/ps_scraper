@@ -17,6 +17,6 @@ install:
 - sudo chmod +x /usr/local/share/chromedriver
 - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
 script:
-- python process_html.py
-- python web_driver.py
-- python build_test.py
+- python src/process_html.py
+- python src/web_driver.py
+- python src/build_test.py
