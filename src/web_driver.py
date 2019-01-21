@@ -3,9 +3,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 import os
+from sys import exit as e
 from pathlib import Path
 
 def download_htmls(username=None, password=None, output=None):
@@ -43,6 +44,14 @@ def download_htmls(username=None, password=None, output=None):
     # Submit
     button.click()
 
+    try:
+        driver.find_element_by_class_name("feedback-alert")
+        print("Invalid Username or Password")
+        e()
+        
+    except NoSuchElementException:
+        print("Successfully Logged in...")
+
     # Find the write hyperlinks.
     class_pages = driver.find_elements_by_class_name("bold")
     for i in class_pages:
@@ -68,7 +77,7 @@ def download_htmls(username=None, password=None, output=None):
         except TimeoutException:
             print("Loading took too much time!")
             print("Likely an internet issue!")
-            exit(0)
+            e()
 
         # Save the source to file
         f.write(driver.page_source.encode('utf-8').strip())

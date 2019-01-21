@@ -237,4 +237,4 @@ def cleanup(path=None, everything=False):
         os.unlink("grades.xlsx")
 
     os.rmdir(path)
-    print("Done cleaning up...")
+    print("Done cleaning up!")

@@ -3,6 +3,7 @@ import process_html
 import getpass
 import argparse
 import os
+from sys import exit as e
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-o", "--output_dir", required=False,
@@ -44,9 +45,9 @@ try:
     web_driver.download_htmls(username=user, password=pass_, output=args['output_dir'])
     process_html.gen_excel(path=args['output_dir'])
     process_html.cleanup(path=args['output_dir'])
-    
-    exit(0)
+
+    e()
 
 except Exception as error:
     print('ERROR', error)
-    exit(0)
+    e()
