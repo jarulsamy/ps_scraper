@@ -13,15 +13,17 @@ This CLI software will query the Albany County School District #1 Powerschool we
 ## Usage
 
 ### Option 1: Windows Only Release Executable
-Download the latest version from the releases tab. Double-click on that executable and enter your username and password. Note, Windows may sound a firewall warning, this can be safely ignored. 
+Download the latest version from the releases tab. Double-click on the executable and enter your username and password. Note, Windows may sound a firewall warning, this can be safely ignored. 
 
 > By default, if no output directory is specified, a Downloads folder containing the HTML files for each class will be created and auto deleted. If the folder, for some reason, is not automatically deleted, it can be safely discarded after run completion. 
 
-### Option 2: Clone (Windows, OSX, Linux)
+### Option 2: Clone and Run With Python (Windows, OSX, Linux)
 
 Clone this repo to your local machine using `https://github.com/JoshuaA9088/ps_scraper`
 
 #### Setup
+
+This software is only compatible with **Python 3.6** or greater.
 
 Install the required dependencies using the `requirements.txt` file.
 
@@ -29,7 +31,7 @@ Install the required dependencies using the `requirements.txt` file.
 pip install -r requirements.txt
 ```
 
-> **Selenium** is required for this application. Please install selenium and the **Chrome Driver**. Add to your platform specific PATH based on the [Selenium Documentation](https://selenium-python.readthedocs.io/index.html).
+> **Selenium** is required for this application when running with python. Please install selenium and the **Chrome Driver**. Add to your platform specific PATH based on the [Selenium Documentation](https://selenium-python.readthedocs.io/index.html).
 
 #### Run
 
@@ -47,18 +49,14 @@ To get started...
 
 - **Option 1**
     - 🍴 Fork this repo!
-
 - **Option 2**
     - 👯 Clone this repo to your local machine using `https://github.com/JoshuaA9088/ps_scraper`
 
 ### Step 2
-
 - **HACK AWAY!** 🔨🔨🔨
 
 ### Step 3
-
 - 🔃 Create a new pull request using <a href="https://github.com/JoshuaA9088/ps_scraper" target="_blank">`https://github.com/JoshuaA9088/ps_scraper`</a>.
-
 ---
 
 ## Support
