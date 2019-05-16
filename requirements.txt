@@ -12,5 +12,5 @@ soupsieve==1.6.2
 tabulate==0.8.2
 termcolor==1.1.0
 twine==1.12.1
-urllib3==1.24.1
+urllib3==1.24.2
 XlsxWriter==1.1.2
