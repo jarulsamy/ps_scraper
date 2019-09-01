@@ -9,8 +9,9 @@ from pathlib import Path
 from sys import exit as e
 import os
 
+
 def download_htmls(username=None, password=None, output=None):
-    if output == None:
+    if output is None:
         output = Path("Downloads")
 
     if not os.path.exists(str(output)):

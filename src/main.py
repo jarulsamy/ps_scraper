@@ -32,12 +32,12 @@ try:
     print("When entering a password, no characters will show.")
     print("")
 
-    if args['username'] == None:
+    if args['username'] is None:
         user = input("Username: ")
     else:
         user = args['username']
 
-    if args['password'] == None:
+    if args['password'] is None:
         pass_ = getpass.getpass()
     else:
         pass_ = args['password']
