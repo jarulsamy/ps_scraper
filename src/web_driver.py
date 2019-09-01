@@ -27,7 +27,7 @@ def download_htmls(username=None, password=None, output=None):
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument('log-level=3')
     driver = webdriver.Chrome(chrome_options=chrome_options)
-    
+
     # Switch to new URL
     url = "https://ps.acsd1.org/guardian/home.html"
     driver.get(url)
@@ -40,7 +40,7 @@ def download_htmls(username=None, password=None, output=None):
     # Substitite with Username and Password
     uname.send_keys(username)
     pword.send_keys(password)
-    
+
     # Submit
     button.click()
 
@@ -67,7 +67,7 @@ def download_htmls(username=None, password=None, output=None):
         # Open and switch to new tab
         i.send_keys(Keys.CONTROL + Keys.RETURN)
         driver.switch_to.window(driver.window_handles[-1])
-        
+
         # Wait till element loads, prevents incomplete page downloads
         try:
             time_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'ng-binding')))
