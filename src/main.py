@@ -13,7 +13,7 @@ ap.add_argument("-u", "--username", required=False,
                 help="Specify user as argument to circumvent prompt")
 
 ap.add_argument("-p", "--password", required=False,
-                help="Specify password as argument, NOT SECURE - NOT RECOMMENDED")
+                help="Specify password as argument, INSECURE")
 
 ap.add_argument("-nc", "--no_cleanup", required=False,
                 help="Don't auto delete HTMLs download folder")

@@ -5,12 +5,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.chrome.options import Options
-import os
-from sys import exit as e
 from pathlib import Path
+from sys import exit as e
+import os
 
 def download_htmls(username=None, password=None, output=None):
-
     if output == None:
         output = Path("Downloads")
 
@@ -48,11 +47,10 @@ def download_htmls(username=None, password=None, output=None):
         driver.find_element_by_class_name("feedback-alert")
         print("Invalid Username or Password")
         e()
-        
     except NoSuchElementException:
         print("Successfully Logged in...")
 
-    # Find the write hyperlinks.
+    # Find the right hyperlinks.
     class_pages = driver.find_elements_by_class_name("bold")
     for i in class_pages:
         if str(i.text)[0] in possible_grades:
@@ -61,8 +59,7 @@ def download_htmls(username=None, password=None, output=None):
     # Iterate through all class pages and download HTMLs
     for i in grade_pages:
         file_name = Path(str(grade_pages.index(i)) + ".html")
-        print("Writing {}...".format(file_name))
-        # f = open(output / str(grade_pages.index(i)) + ".html", "wb")
+        print(f"Writing {file_name}...")
         total_path = str(output / file_name)
         f = open(total_path, "wb")
 
