@@ -70,7 +70,8 @@ def download_htmls(username=None, password=None, output=None):
 
         # Wait till element loads, prevents incomplete page downloads
         try:
-            time_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'ng-binding')))
+            time_element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, 'ng-binding')))
         # Timeout of 10 seconds
         except TimeoutException:
             print("Loading took too much time!")

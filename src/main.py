@@ -17,11 +17,9 @@ ap.add_argument("-p", "--password", required=False,
 
 ap.add_argument("-nc", "--no_cleanup", required=False,
                 help="Don't auto delete HTMLs download folder")
-
 args = vars(ap.parse_args())
 
 try:
-
     print("Welcome to the Laramie High School Powerschool Scraper!")
     print("Maintained by: Joshua Arulsamy")
     print("Please enter your Powerschool Username and Password")

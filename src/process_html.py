@@ -127,7 +127,8 @@ def gen_worksheets(worksheets):
 
     for filename in worksheets:
         row, row_grades, col = 2, 2, 0
-        worksheet_obj[filename] = workbook.add_worksheet(worksheets[filename][5])
+        worksheet_obj[filename] = workbook.add_worksheet(
+            worksheets[filename][5])
 
         final_date = worksheets[filename][0]
         final_cat = worksheets[filename][1]
@@ -149,45 +150,50 @@ def gen_worksheets(worksheets):
                                           "=(D{}/E{})".format(row_grades + 1, row_grades + 1), percent_fmt)
             row_grades += 1
 
-        worksheet_obj[filename].merge_range('A1:F1', teacher_lines[0], title_format)
-        worksheet_obj[filename].merge_range('A2:D2', 'Final Grade', grade_format)
+        worksheet_obj[filename].merge_range(
+            'A1:F1', teacher_lines[0], title_format)
+        worksheet_obj[filename].merge_range(
+            'A2:D2', 'Final Grade', grade_format)
 
         # Calculate Final Percentage
-        percentage = '=SUMIF(D3:D{0}, ">=0") / SUMIF(D3:D{0}, ">=0", E3:E{0}) * 100'.format(row_grades)
-        worksheet_obj[filename].write_formula("E2", percentage, final_grade_format)
+        percentage = '=SUMIF(D3:D{0}, ">=0") / SUMIF(D3:D{0}, ">=0", E3:E{0}) * 100'.format(
+            row_grades)
+        worksheet_obj[filename].write_formula(
+            "E2", percentage, final_grade_format)
 
         # Calculate Final Grade Letter
         letter = '=IF(E2 <= 69, "F", IF(AND(E2 >= 69.9, E2 <= 79.9), "C", IF(AND(E2 >= 80, E2 < 89.9), "B", IF(E2 >= 89.9, "A"))))'
-        worksheet_obj[filename].write_formula("F2", letter, letter_grade_format)
+        worksheet_obj[filename].write_formula(
+            "F2", letter, letter_grade_format)
 
         # Conditional Formatting
         worksheet_obj[filename].conditional_format("E2:F2",
-        {
-            'type': 'formula',
-            'criteria': '=$F$2="A"',
-            'format': pass_format
-        })
+                                                   {
+                                                       'type': 'formula',
+                                                       'criteria': '=$F$2="A"',
+                                                       'format': pass_format
+                                                   })
 
         worksheet_obj[filename].conditional_format("E2:F2",
-        {
-            'type': 'formula',
-            'criteria': '=$F$2="B"',
-            'format': moderate_format
-        })
+                                                   {
+                                                       'type': 'formula',
+                                                       'criteria': '=$F$2="B"',
+                                                       'format': moderate_format
+                                                   })
 
         worksheet_obj[filename].conditional_format("E2:F2",
-        {
-            'type': 'formula',
-            'criteria': '=$F$2="C"',
-            'format': moderate_format
-        })
+                                                   {
+                                                       'type': 'formula',
+                                                       'criteria': '=$F$2="C"',
+                                                       'format': moderate_format
+                                                   })
 
         worksheet_obj[filename].conditional_format("E2:F2",
-        {
-            'type': 'formula',
-            'criteria': '=$F$2="F"',
-            'format': fail_format
-        })
+                                                   {
+                                                       'type': 'formula',
+                                                       'criteria': '=$F$2="F"',
+                                                       'format': fail_format
+                                                   })
 
         # Calculate and set column widths
         longest_cat = len(max(final_cat, key=len))
@@ -214,10 +220,12 @@ def gen_excel(path=None):
     htmls = natsort.natsorted(htmls)
 
     for filename in htmls:
-        final_date, final_cat, final_assign, final_grade, teacher_lines = scrap_data(path / filename)
+        final_date, final_cat, final_assign, final_grade, teacher_lines = scrap_data(
+            path / filename)
 
         sheet_name = teacher_lines[2]
-        worksheets[filename] = [final_date, final_cat, final_assign, final_grade, teacher_lines, sheet_name]
+        worksheets[filename] = [final_date, final_cat,
+                                final_assign, final_grade, teacher_lines, sheet_name]
 
     gen_worksheets(worksheets)
 
