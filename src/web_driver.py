@@ -4,10 +4,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from pathlib import Path
 from sys import exit as e
 import os
+import time
 
 
 def download_htmls(username=None, password=None, output=None):
@@ -22,11 +23,9 @@ def download_htmls(username=None, password=None, output=None):
     grade_pages = []
 
     # Headless options
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument('log-level=3')
-    driver = webdriver.Chrome(chrome_options=chrome_options)
+    options = FirefoxOptions()
+    options.add_argument("--headless")
+    driver = webdriver.Firefox(firefox_options=options)
 
     # Switch to new URL
     url = "https://ps.acsd1.org/guardian/home.html"
@@ -66,7 +65,8 @@ def download_htmls(username=None, password=None, output=None):
 
         # Open and switch to new tab
         i.send_keys(Keys.CONTROL + Keys.RETURN)
-        driver.switch_to.window(driver.window_handles[-1])
+        time.sleep(1)
+        driver.switch_to.window(driver.window_handles[1])
 
         # Wait till element loads, prevents incomplete page downloads
         try:
