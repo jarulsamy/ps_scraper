@@ -5,11 +5,11 @@ import os
 from os.path import isfile, join
 from pathlib import Path
 import natsort
+import math
 
 
-def scrap_data(filename):
-    f = open(filename, "r")
-    soup = BeautifulSoup(f, features="lxml")
+def scrap_data(html):
+    soup = BeautifulSoup(html, features="lxml")
 
     spans_date = soup.find_all('td', {'class': 'ng-binding'})
     spans_cat = soup.find_all('span', {'class': 'psonly ng-binding'})
@@ -71,13 +71,13 @@ def scrap_data(filename):
     return final_date, final_cat, final_assign, final_grade, teacher_lines
 
 
-def gen_worksheets(worksheets):
+def gen_worksheets(worksheets, path):
 
     # Dictionary of worksheets
     worksheet_obj = {}
 
     # Create a workbook
-    workbook = xlsxwriter.Workbook("grades.xlsx")
+    workbook = xlsxwriter.Workbook(path)
 
     # Define various cell formats
     percent_fmt = workbook.add_format({'num_format': '0.00%'})
@@ -196,53 +196,32 @@ def gen_worksheets(worksheets):
                                                    })
 
         # Calculate and set column widths
+        longest_date = len(max(final_date, key=len))
         longest_cat = len(max(final_cat, key=len))
         longest_assign = len(max(final_assign, key=len))
+        longest_grade = len(str(max([x[1] for x in final_grade])))
 
-        worksheet_obj[filename].set_column("A:A", 10)
+        worksheet_obj[filename].set_column("A:A", longest_date)
         worksheet_obj[filename].set_column('B:B', longest_cat)
-        worksheet_obj[filename].set_column('C:C', longest_assign - 5)
-        worksheet_obj[filename].set_column("D:D", 4)
-        worksheet_obj[filename].set_column("E:E", 5)
-        worksheet_obj[filename].set_column("F:F", 7)
+        worksheet_obj[filename].set_column('C:C', longest_assign)
+        worksheet_obj[filename].set_column("D:E", longest_grade)
+        worksheet_obj[filename].set_column("F:F", 10)
 
     # Sort the worksheets -> Ascending
     workbook.worksheets_objs.sort(key=lambda x: x.name)
     workbook.close()
 
 
-def gen_excel(path=None):
+def gen_excel(htmls, path):
     worksheets = {}
-    if path is None:
-        path = Path('Downloads')
 
-    htmls = [Path(f) for f in os.listdir(path) if isfile(join(path, f))]
-    htmls = natsort.natsorted(htmls)
-
-    for filename in htmls:
+    for html in htmls:
         final_date, final_cat, final_assign, final_grade, teacher_lines = scrap_data(
-            path / filename)
+            html)
 
         sheet_name = teacher_lines[2]
-        worksheets[filename] = [final_date, final_cat,
-                                final_assign, final_grade, teacher_lines, sheet_name]
+        worksheets[html] = [final_date, final_cat,
+                            final_assign, final_grade, teacher_lines, sheet_name]
 
-    gen_worksheets(worksheets)
-
-    print("Writing to grades.xlsx...Done!")
-
-
-def cleanup(path=None, everything=False):
-    if path is None:
-        path = Path("Downloads")
-
-    htmls = [Path(f) for f in os.listdir(path) if isfile(join(path, f))]
-    for f in htmls:
-        os.unlink(path / f)
-
-    if everything:
-        print("Deleting resulting files...")
-        os.unlink("grades.xlsx")
-
-    os.rmdir(path)
-    print("Done cleaning up!")
+    gen_worksheets(worksheets, path)
+    # print("Writing to grades.xlsx...Done!")

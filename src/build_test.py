@@ -1,10 +1,9 @@
 import web_driver
 import process_html
 import os
+from subprocess import Popen, PIPE
 
-print("Username: ", os.getenv("test_user"))
-
-web_driver.download_htmls(username=os.getenv(
-    "test_user"), password=os.getenv("test_password"))
-process_html.gen_excel()
-process_html.cleanup(everything=True)
+ret = os.system(
+    f"python main.py --username {os.getenv('test_user')} --password {os.getenv('test_password')}")
+if ret != 0:
+    raise Exception("Failed Test!")
