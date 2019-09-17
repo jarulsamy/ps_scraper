@@ -1,23 +1,26 @@
 language: python
 python:
-- '3.6'
-cache: 
+- '3.7'
+cache:
 - pip
 addons:
-- chrome: stable
+- firefox: stable
 services:
 - xvfb
 
 install:
+# Dependencies
 - pip install -r src/requirements.txt
-# Install Chrome Web Driver
-- wget -N https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip -P ~/
-- unzip ~/chromedriver_linux64.zip -d ~/
-- rm ~/chromedriver_linux64.zip
-- sudo mv -f ~/chromedriver /usr/local/share/
-- sudo chmod +x /usr/local/share/chromedriver
-- sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
+# Install Firefox Web Driver
+- wget -N https://github.com/mozilla/geckodriver/releases/download/v0.25.0/geckodriver-v0.25.0-linux64.tar.gz -P ~/
+- tar -C ~/ -zxvf ~/geckodriver-v0.25.0-linux64.tar.gz
+- rm ~/geckodriver-v0.25.0-linux64.tar.gz
+- sudo mv -f ~/geckodriver /usr/local/share/
+- sudo chmod +x /usr/local/share/geckodriver
+- sudo ln -s /usr/local/share/geckodriver /usr/local/bin/geckodriver
 script:
-- python src/process_html.py
-- python src/web_driver.py
-- python src/build_test.py
+- cd src/
+- python process_html.py
+- python web_driver.py
+- python build_test.py
+- python guiUtils.py

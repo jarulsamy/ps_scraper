@@ -6,21 +6,19 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from pathlib import Path
-from sys import exit as e
+import sys
 import os
 import time
 
 
-def download_htmls(username=None, password=None, output=None):
-    if output is None:
-        output = Path("Downloads")
-
-    if not os.path.exists(str(output)):
-        os.makedirs(str(output))
+def download_htmls(username=None, password=None, url=None):
+    if url is None:
+        url = "https://ps.acsd1.org/guardian/home.html"
 
     # Possible grades to find correct Hyperlinks
     possible_grades = "A B C D F"
     grade_pages = []
+    html_data = []
 
     # Headless options
     options = FirefoxOptions()
@@ -28,7 +26,6 @@ def download_htmls(username=None, password=None, output=None):
     driver = webdriver.Firefox(firefox_options=options)
 
     # Switch to new URL
-    url = "https://ps.acsd1.org/guardian/home.html"
     driver.get(url)
 
     # Find Username, password, and button
@@ -46,9 +43,10 @@ def download_htmls(username=None, password=None, output=None):
     try:
         driver.find_element_by_class_name("feedback-alert")
         print("Invalid Username or Password")
-        e()
+        sys.exit(1)
     except NoSuchElementException:
-        print("Successfully Logged in...")
+        pass
+        # print("Successfully Logged in...")
 
     # Find the right hyperlinks.
     class_pages = driver.find_elements_by_class_name("bold")
@@ -56,13 +54,8 @@ def download_htmls(username=None, password=None, output=None):
         if str(i.text)[0] in possible_grades:
             grade_pages.append(i)
 
-    # Iterate through all class pages and download HTMLs
+    # Iterate through all class pages and save HTML
     for i in grade_pages:
-        file_name = Path(str(grade_pages.index(i)) + ".html")
-        print(f"Writing {file_name}...")
-        total_path = str(output / file_name)
-        f = open(total_path, "wb")
-
         # Open and switch to new tab
         i.send_keys(Keys.CONTROL + Keys.RETURN)
         time.sleep(1)
@@ -76,17 +69,17 @@ def download_htmls(username=None, password=None, output=None):
         except TimeoutException:
             print("Loading took too much time!")
             print("Likely an internet issue!")
-            e()
+            sys.exit(0)
 
-        # Save the source to file
-        f.write(driver.page_source.encode('utf-8').strip())
+        # Save the source to memory
+        html_data.append(driver.page_source.encode('utf-8').strip())
         driver.close()
 
         # Cleanup, switch back to main tab
         driver.switch_to.window(driver.window_handles[0])
-        f.close()
 
     # Kill main window
     driver.close()
 
-    print("Done grabbing HTMLs")
+    # print("Done grabbing HTMLs")
+    return html_data

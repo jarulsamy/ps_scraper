@@ -1,5 +1,5 @@
 # PS_Scraper
-## Laramie High School Powerschool Scraper 
+## Laramie High School Powerschool Scraper
 
 <img src=ps_logo.jpg width=100 height=100 align="middle"> <img src="lhs_logo.jpg" width=100 height =100 align='middle'>
 
@@ -13,9 +13,9 @@ This CLI software will query the Albany County School District #1 Powerschool we
 ## Usage
 
 ### Option 1: Windows Only Release Executable
-Download the latest version from the releases tab. Double-click on the executable and enter your username and password. Note, Windows may sound a firewall warning, this can be safely ignored. 
+Download the latest version from the releases tab. Double-click on the executable and enter your username and password. Note, Windows may sound a firewall warning, this can be safely ignored.
 
-> By default, if no output directory is specified, a Downloads folder containing the HTML files for each class will be created and auto deleted. If the folder, for some reason, is not automatically deleted, it can be safely discarded after run completion. 
+> By default, if no output directory is specified, a Downloads folder containing the HTML files for each class will be created and auto deleted. If the folder, for some reason, is not automatically deleted, it can be safely discarded after run completion.
 
 ### Option 2: Clone and Run With Python (Windows, OSX, Linux)
 
@@ -37,7 +37,7 @@ pip install -r requirements.txt
 
 Call the python script `main.py` and enter your powerschool username and password to grab HTML files and create Excel workbook.
 
-> By default, if no output directory is specified, a Downloads folder containing the HTML files for each class will be created and auto deleted. This folder can be preserved with the `-nc` flag. If the folder, for some reason, is not automatically deleted, it can be safely discarded after run completion. 
+> By default, if no output directory is specified, a Downloads folder containing the HTML files for each class will be created and auto deleted. This folder can be preserved with the `-nc` flag. If the folder, for some reason, is not automatically deleted, it can be safely discarded after run completion.
 
 ---
 
