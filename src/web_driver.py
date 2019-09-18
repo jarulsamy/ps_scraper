@@ -73,7 +73,7 @@ def download_htmls(username=None, password=None, url=None):
 
         # Save the source to memory
         html_data.append(driver.page_source.encode('utf-8').strip())
-        driver.close()
+        # driver.close()
 
         # Cleanup, switch back to main tab
         driver.switch_to.window(driver.window_handles[0])

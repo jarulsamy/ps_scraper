@@ -52,7 +52,6 @@ def scrap_data(html):
     final_grade = []
 
     for grade in grade_lines:
-
         # Remove leading and trailing whitespace, basically cleanup
         grade = grade.rstrip()
         grade = grade.lstrip()
@@ -72,7 +71,6 @@ def scrap_data(html):
 
 
 def gen_worksheets(worksheets, path):
-
     # Dictionary of worksheets
     worksheet_obj = {}
 
@@ -224,4 +222,3 @@ def gen_excel(htmls, path):
                             final_assign, final_grade, teacher_lines, sheet_name]
 
     gen_worksheets(worksheets, path)
-    # print("Writing to grades.xlsx...Done!")
