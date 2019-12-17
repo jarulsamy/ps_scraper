@@ -1,9 +1,7 @@
-/.vscode/
-/.vs/
-/Downloads/*
-/.vscode/*
+.vscode/
+.vs/
+Downloads/
 cred.py
-/__pycache__/
 *.log
 *.xlsx
 *.pyc
@@ -11,6 +9,8 @@ cred.py
 __pycache__/
 *.py[cod]
 *$py.class
+.swp
+.pytest_cache/
 
 # C extensions
 *.so

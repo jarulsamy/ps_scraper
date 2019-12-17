@@ -5,9 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from pathlib import Path
 import sys
-import os
 import time
 
 
@@ -63,7 +61,7 @@ def download_htmls(username=None, password=None, url=None):
 
         # Wait till element loads, prevents incomplete page downloads
         try:
-            time_element = WebDriverWait(driver, 10).until(
+            WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, 'ng-binding')))
         # Timeout of 10 seconds
         except TimeoutException:

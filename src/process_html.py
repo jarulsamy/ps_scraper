@@ -1,11 +1,7 @@
 from bs4 import BeautifulSoup
 import xlsxwriter
 import datetime
-import os
-from os.path import isfile, join
 from pathlib import Path
-import natsort
-import math
 
 
 def scrap_data(html):
@@ -25,7 +21,7 @@ def scrap_data(html):
         try:
             datetime.datetime.strptime(date, '%m/%d/%Y')
             final_date.append(date)
-        except ValueError as e:
+        except ValueError:
             pass
 
     # Category
@@ -135,7 +131,7 @@ def gen_worksheets(worksheets, path):
         teacher_lines = worksheets[filename][4]
 
         # Write all data to file
-        for i in range(len(final_date)):
+        for i, _ in enumerate(final_date):
             worksheet_obj[filename].write(row, col, final_date[i])
             worksheet_obj[filename].write(row, col + 1, final_cat[i])
             worksheet_obj[filename].write(row, col + 2, final_assign[i])

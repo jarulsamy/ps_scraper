@@ -2,10 +2,9 @@ import web_driver
 import process_html
 import getpass
 import argparse
-import os
 import sys
 from pyfiglet import Figlet
-from guiUtils import Spinner, HiddenPrints
+from guiUtils import Spinner
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-o", "--output_dir", required=False,
@@ -22,8 +21,8 @@ ap.add_argument("-url", "--url", required=False,
 args = vars(ap.parse_args())
 
 f = Figlet()
+print("")
 print(f.renderText("Powerschool\nScraper"))
-print(f.renderText(""))
 
 if args['username'] is None:
     print("Please enter your Powerschool Username and Password")
