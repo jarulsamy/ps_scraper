@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import xlsxwriter
 import datetime
-from pathlib import Path
 
 
 def scrap_data(html):
