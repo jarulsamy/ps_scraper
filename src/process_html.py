@@ -54,10 +54,11 @@ def scrap_data(html):
         # Handle not yet inputted grades
         if "--" in grade:
             # Find top and bottom of fraction
-            grade_split = ["--", float(grade.split("/")[1])]
+            grade_split = ("--", float(grade.split("/")[1]))
         else:
             # Find top and bottom of fraction
-            grade_split = [float(x) for x in grade.split("/")]
+            grade_split = (
+                float(grade.split("/")[0]), float(grade.split("/")[1]))
 
         # Create final list of all grades
         final_grade.append(grade_split)
@@ -130,10 +131,10 @@ def gen_worksheets(worksheets, path):
         teacher_lines = worksheets[filename][4]
 
         # Write all data to file
-        for i, _ in enumerate(final_date):
-            worksheet_obj[filename].write(row, col, final_date[i])
-            worksheet_obj[filename].write(row, col + 1, final_cat[i])
-            worksheet_obj[filename].write(row, col + 2, final_assign[i])
+        for i, j, k in zip(final_date, final_cat, final_assign):
+            worksheet_obj[filename].write(row, col, i)
+            worksheet_obj[filename].write(row, col + 1, j)
+            worksheet_obj[filename].write(row, col + 2, k)
             row += 1
 
         for grade, total in (final_grade):

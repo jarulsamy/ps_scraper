@@ -24,16 +24,16 @@ f = Figlet()
 print("")
 print(f.renderText("Powerschool\nScraper"))
 
-if args['username'] is None:
+if args["username"] is None:
     print("Please enter your Powerschool Username and Password")
     print("When entering a password, no characters will show.")
     user = input("Username: ")
 else:
-    user = args['username']
-if args['password'] is None:
+    user = args["username"]
+if args["password"] is None:
     pass_ = getpass.getpass()
 else:
-    pass_ = args['password']
+    pass_ = args["password"]
 
 
 with Spinner():

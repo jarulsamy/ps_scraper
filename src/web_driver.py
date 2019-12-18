@@ -1,20 +1,20 @@
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-import sys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium import webdriver
 import time
+import sys
 
 
 def download_htmls(username=None, password=None, url=None):
     if url is None:
         url = "https://ps.acsd1.org/guardian/home.html"
 
-    # Possible grades to find correct Hyperlinks
-    possible_grades = "A B C D F"
+    # Possible grades to find correct hyperlinks
+    possible_grades = ("A", "B", "C", "D", "F")
     grade_pages = []
     html_data = []
 
@@ -62,15 +62,14 @@ def download_htmls(username=None, password=None, url=None):
         # Wait till element loads, prevents incomplete page downloads
         try:
             WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.CLASS_NAME, 'ng-binding')))
+                EC.presence_of_element_located((By.CLASS_NAME, "ng-binding")))
         # Timeout of 10 seconds
         except TimeoutException:
-            print("Loading took too much time!")
-            print("Likely an internet issue!")
+            print("Loading took too long!")
             sys.exit(0)
 
         # Save the source to memory
-        html_data.append(driver.page_source.encode('utf-8').strip())
+        html_data.append(driver.page_source.encode("utf-8").strip())
         # driver.close()
 
         # Cleanup, switch back to main tab
