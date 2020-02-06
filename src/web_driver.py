@@ -1,12 +1,15 @@
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
+# -*- coding: utf-8 -*-
+import sys
+import time
+
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium import webdriver
-import time
-import sys
 
 
 def download_htmls(username=None, password=None, url=None):
@@ -62,7 +65,8 @@ def download_htmls(username=None, password=None, url=None):
         # Wait till element loads, prevents incomplete page downloads
         try:
             WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "ng-binding")))
+                EC.presence_of_element_located((By.CLASS_NAME, "ng-binding"))
+            )
         # Timeout of 10 seconds
         except TimeoutException:
             print("Loading took too long!")

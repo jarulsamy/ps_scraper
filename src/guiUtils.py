@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 import os
 import sys
-import time
 import threading
+import time
 
 
 class Spinner:
@@ -11,7 +12,7 @@ class Spinner:
     @staticmethod
     def spinning_cursor():
         while 1:
-            for cursor in '|/-\\':
+            for cursor in "|/-\\":
                 yield cursor
 
     def __init__(self, delay=None):
@@ -24,7 +25,7 @@ class Spinner:
             sys.stdout.write(next(self.spinner_generator))
             sys.stdout.flush()
             time.sleep(self.delay)
-            sys.stdout.write('\b')
+            sys.stdout.write("\b")
             sys.stdout.flush()
 
     def __enter__(self):
@@ -41,7 +42,7 @@ class Spinner:
 class HiddenPrints:
     def __enter__(self):
         self._original_stdout = sys.stdout
-        sys.stdout = open(os.devnull, 'w')
+        sys.stdout = open(os.devnull, "w")
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdout.close()

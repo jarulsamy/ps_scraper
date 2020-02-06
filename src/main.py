@@ -1,23 +1,37 @@
-import web_driver
-import process_html
-import getpass
+# -*- coding: utf-8 -*-
 import argparse
+import getpass
 import sys
-from pyfiglet import Figlet
+
+import process_html
+import web_driver
 from guiUtils import Spinner
+from pyfiglet import Figlet
 
 ap = argparse.ArgumentParser()
-ap.add_argument("-o", "--output_dir", required=False,
-                help="Output path of Excel Doc", default="Grades.xlsx")
+ap.add_argument(
+    "-o",
+    "--output_dir",
+    required=False,
+    help="Output path of Excel Doc",
+    default="Grades.xlsx",
+)
 
-ap.add_argument("-u", "--username", required=False,
-                help="Specify user as argument to circumvent prompt, must use -p")
+ap.add_argument(
+    "-u",
+    "--username",
+    required=False,
+    help="Specify user as argument to circumvent prompt, must use -p",
+)
 
-ap.add_argument("-p", "--password", required=False,
-                help="Specify password as argument")
+ap.add_argument("-p", "--password", required=False, help="Specify password as argument")
 
-ap.add_argument("-url", "--url", required=False,
-                help="Specify custom URL for Powerschool, probably won't work :P")
+ap.add_argument(
+    "-url",
+    "--url",
+    required=False,
+    help="Specify custom URL for Powerschool, probably won't work :P",
+)
 args = vars(ap.parse_args())
 
 f = Figlet()
@@ -38,9 +52,7 @@ else:
 
 with Spinner():
     html_data = web_driver.download_htmls(
-        username=user,
-        password=pass_,
-        url=args["url"]
+        username=user, password=pass_, url=args["url"]
     )
     process_html.gen_excel(html_data, args["output_dir"])
 
