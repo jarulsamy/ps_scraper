@@ -32,6 +32,11 @@ ap.add_argument(
     required=False,
     help="Specify custom URL for Powerschool, probably won't work :P",
 )
+
+ap.add_argument(
+    "-d", "--debug", required=False, action="store_true", help="Toggle for debug mode."
+)
+
 args = vars(ap.parse_args())
 
 f = Figlet()
@@ -50,11 +55,17 @@ else:
     pass_ = args["password"]
 
 
-with Spinner():
+if args["debug"]:
     html_data = web_driver.download_htmls(
         username=user, password=pass_, url=args["url"]
     )
     process_html.gen_excel(html_data, args["output_dir"])
+else:
+    with Spinner():
+        html_data = web_driver.download_htmls(
+            username=user, password=pass_, url=args["url"]
+        )
+        process_html.gen_excel(html_data, args["output_dir"])
 
 print("\nDone!")
 sys.exit(0)

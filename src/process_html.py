@@ -44,14 +44,14 @@ def scrap_data(html):
     teacher_lines = teacher_lines[1].split("\n")
     teacher_lines = teacher_lines[1:4]
     teacher_lines = [str(about) for about in teacher_lines]
-    teacher_lines[0] = teacher_lines[0][0 : len(teacher_lines[0]) - 1]
+    # Remove final * from names.
+    teacher_lines[0] = teacher_lines[0][:-1]
 
     final_grade = []
 
     for grade in grade_lines:
         # Remove leading and trailing whitespace, basically cleanup
-        grade = grade.rstrip()
-        grade = grade.lstrip()
+        grade = grade.strip()
 
         # Handle not yet inputted grades
         if "--" in grade:
@@ -91,7 +91,7 @@ def gen_worksheets(worksheets, path):
     )
 
     letter_grade_format = workbook.add_format(
-        {"bold": 1, "border": 1, "align": "center", "valign": "center",}
+        {"bold": 1, "border": 1, "align": "center", "valign": "center"}
     )
 
     grade_format = workbook.add_format(
@@ -105,15 +105,15 @@ def gen_worksheets(worksheets, path):
     )
 
     fail_format = workbook.add_format(
-        {"border": 1, "bg_color": "#FF0000", "font_color": "	#000000",}
+        {"border": 1, "bg_color": "#FF0000", "font_color": "#000000"}
     )
 
     moderate_format = workbook.add_format(
-        {"border": 1, "bg_color": "#ff9900", "font_color": "	#000000",}
+        {"border": 1, "bg_color": "#ff9900", "font_color": "#000000"}
     )
 
     pass_format = workbook.add_format(
-        {"border": 1, "bg_color": "#00ff00", "font_color": "	#000000",}
+        {"border": 1, "bg_color": "#00ff00", "font_color": "#000000"}
     )
 
     for filename in worksheets:
