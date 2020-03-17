@@ -44,14 +44,14 @@ def scrap_data(html):
     teacher_lines = teacher_lines[1].split("\n")
     teacher_lines = teacher_lines[1:4]
     teacher_lines = [str(about) for about in teacher_lines]
-    teacher_lines[0] = teacher_lines[0][0 : len(teacher_lines[0]) - 1]
+    # Remove final * from names.
+    teacher_lines[0] = teacher_lines[0][:-1]
 
     final_grade = []
 
     for grade in grade_lines:
         # Remove leading and trailing whitespace, basically cleanup
-        grade = grade.rstrip()
-        grade = grade.lstrip()
+        grade = grade.strip()
 
         # Handle not yet inputted grades
         if "--" in grade:
