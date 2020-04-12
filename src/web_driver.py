@@ -43,14 +43,15 @@ class Powerschool(object):
             self.auth_data["ldap"] = False
 
     def auth(self):
-        authdata = self._getAuthData()
+        self._getAuthData()
+
         dbpw = hmac.new(
-            authdata["contextData"].encode("ascii"),
+            self.auth_data["contextData"].encode("ascii"),
             self.pword.lower().encode("ascii"),
             hashlib.md5,
         ).hexdigest()
         pw = hmac.new(
-            authdata["contextData"].encode("ascii"),
+            self.auth_data["contextData"].encode("ascii"),
             base64.b64encode(hashlib.md5(self.pword.encode("ascii")).digest()).replace(
                 b"=", b""
             ),
@@ -58,8 +59,8 @@ class Powerschool(object):
         ).hexdigest()
 
         fields = {
-            "pstoken": authdata["pstoken"],
-            "contextData": authdata["contextData"],
+            "pstoken": self.auth_data["pstoken"],
+            "contextData": self.auth_data["contextData"],
             "dbpw": dbpw,
             "serviceName": "PS Parent Portal",
             "pcasServerUrl": "/",
@@ -68,7 +69,7 @@ class Powerschool(object):
             "pw": pw,
         }
 
-        if authdata["ldap"]:
+        if self.auth_data["ldap"]:
             fields["ldappassword"] = self.pword
 
         r = self.session.post(self.url + "guardian/home.html", data=fields)
