@@ -1,9 +1,8 @@
-import base64
-import hashlib
-import hmac
 import re
+from pprint import pprint
 
 import requests
+from bs4 import BeautifulSoup
 
 
 class Powerschool(object):
@@ -12,67 +11,40 @@ class Powerschool(object):
 
         if url is None:
             url = "https://ps.acsd1.org/"
+        elif url[-1] != "/":
+            url += "/"
 
         self.uname = uname
         self.pword = pword
+
         self.url = url
+        self.homepage = url + "guardian/home.html"
+        self.base_url = url + "guardian/"
+
         self.session = requests.session()
         self.auth()
-
-    def _getAuthData(self):
-        r = self.session.get(self.url)
-
-        if r.status_code != requests.codes.ok:
-            raise Exception("Unable to retrieve authentication tokens from PS server.")
-
-        self.auth_data = {}
-
-        pstoken = re.search(
-            r'<input type="hidden" name="pstoken" value="(.*?)" \/>', r.text, re.S
-        )
-        self.auth_data["pstoken"] = pstoken.groups()[0]
-
-        contextData = re.search(
-            r'<input type="hidden" name="contextData" value="(.*?)" \/>', r.text, re.S
-        )
-        self.auth_data["contextData"] = contextData.groups()[0]
-
-        if "<input type=hidden name=ldappassword value=''>" in r.text:
-            self.auth_data["ldap"] = True
-        else:
-            self.auth_data["ldap"] = False
+        self._get_hyperlinks()
 
     def auth(self):
-        self._getAuthData()
 
-        dbpw = hmac.new(
-            self.auth_data["contextData"].encode("ascii"),
-            self.pword.lower().encode("ascii"),
-            hashlib.md5,
-        ).hexdigest()
-        pw = hmac.new(
-            self.auth_data["contextData"].encode("ascii"),
-            base64.b64encode(hashlib.md5(self.pword.encode("ascii")).digest()).replace(
-                b"=", b""
-            ),
-            hashlib.md5,
-        ).hexdigest()
-
-        fields = {
-            "pstoken": self.auth_data["pstoken"],
-            "contextData": self.auth_data["contextData"],
-            "dbpw": dbpw,
+        auth_data = {
+            "dbpw": self.pword,
+            "translator_username": "",
+            "translator_password": "",
+            "translator_ldappassword": "",
+            "returnUrl": "",
             "serviceName": "PS Parent Portal",
+            "serviceTicket": "",
             "pcasServerUrl": "/",
             "credentialType": "User Id and Password Credential",
+            "ldappassword": self.pword,
+            "request_locale": "en_US",
             "account": self.uname,
-            "pw": pw,
+            "pw": self.pword,
+            "translatorpw": "",
         }
 
-        if self.auth_data["ldap"]:
-            fields["ldappassword"] = self.pword
-
-        r = self.session.post(self.url + "guardian/home.html", data=fields)
+        r = self.session.post(self.homepage, auth_data)
 
         if u"Grades and Attendance" not in r.text:
             pserror = re.search(
@@ -83,6 +55,14 @@ class Powerschool(object):
                 raise Exception(pserror.groups()[0])
             else:
                 raise Exception("Unable to login to PS server.")
-        else:
-            print(r.text)
-            # return user(self, r.text)
+
+    def _get_hyperlinks(self):
+        r = self.session.get(self.homepage)
+        soup = BeautifulSoup(r.text, features="lxml")
+
+        self.grade_links = []
+        for link in soup.find_all("a"):
+            sub_link = link.get("href")
+            if "scores" in sub_link and "begdate" in sub_link:
+                real_link = self.base_url + sub_link
+                self.grade_links.append(real_link)
