@@ -1,4 +1,11 @@
 # PS_Scraper
+
+## NO LONGER MAINTAINED
+
+I no longer have access to a Powerschool account, so I can't actively devleop this anymore
+
+If any one would like to contribute to this project, please let me know.
+
 ## Powerschool Scraper
 
 <img src=ps_logo.jpg width=100 height=100 align="middle">
